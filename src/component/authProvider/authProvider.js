@@ -1,4 +1,10 @@
 import * as cbconn from 'corebos-ws-lib/WSClientm';
+import config from '../../config';
+
+if (window.coreBOS===undefined) {
+	window.coreBOS = {};
+}
+window.coreBOS.LoginEvent = new CustomEvent('coreBOSLoginEvent', { });
 
 export default {
 	// called when the user attempts to log in
@@ -7,11 +13,12 @@ export default {
 		if (logdata) {
 			return Promise.resolve();
 		} else {
-			const apiUrl = 'http://localhost/coreBOSwork';
+			const apiUrl = config.Server.url;
 			cbconn.setURL(apiUrl);
 			let logindata = await cbconn.doLogin(username, password, false);
 			if (logindata !== false && cbconn.hasError(logindata) === false) {
 				localStorage.setItem('coreboslogindata', JSON.stringify(logindata['result']));
+				window.dispatchEvent(window.coreBOS.LoginEvent);
 				return Promise.resolve();
 			} else {
 				return Promise.reject(new Error('incorrect response: ' + cbconn.lastError()));
