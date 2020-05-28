@@ -11,6 +11,7 @@ export default {
 	login: async ({ username, password }) => {
 		let logdata = localStorage.getItem('coreboslogindata');
 		if (logdata) {
+			window.dispatchEvent(window.coreBOS.LoginEvent);
 			return Promise.resolve();
 		} else {
 			const apiUrl = config.Server.url;
