@@ -7,11 +7,11 @@ if (window.coreBOS===undefined) {
 
 window.addEventListener('coreBOSLoginEvent', function (e) {
 	window.coreBOS.Describe = {};
-	for(let mod = 0; mod < config.DescribeModules.length; mod++) {
-		cbconn.doDescribe(config.DescribeModules[mod]).then((data) => {
-			window.coreBOS.Describe[data.name] = data;
-		});
-	}
+	cbconn.doDescribe(config.DescribeModules).then((data) => {
+		for (var [mod, desc] of Object.entries(data)) {
+			window.coreBOS.Describe[mod] = desc;
+		}
+	});
 }, false);
 
 export default () => { };
