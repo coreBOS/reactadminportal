@@ -1,15 +1,46 @@
 import React from 'react';
-import { List, Datagrid, TextField, EmailField } from 'react-admin';
+import { List, Datagrid } from 'react-admin';
+import cbUtils from '../corebosUtils/corebosUtils';
 
-export const cbListGuesser = props => (
-    <List {...props}>
-        <Datagrid rowClick="edit">
-            <TextField source="id" />
-            <TextField source="first_name" />
-            <TextField source="user_name" />
-            <EmailField source="email1" />
-            <TextField source="phone_work" />
-            <TextField source="website" />
-        </Datagrid>
-    </List>
-);
+function getFilterFields(module) {
+	let ffields = [];
+	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
+		ffields = window.coreBOS.Describe[module].filterFields.fields;
+	}
+	let fields = [];
+	for (let f = 0; f<ffields.length; f++) {
+		fields.push(window.coreBOS.Describe[module].fields.find((element) => element.name === ffields[f]));
+	}
+	return fields;
+}
+
+export const cbListGuesser = props => {
+	let module = props.options.module;
+	let fields = getFilterFields(module);
+	let label = '';
+	let pagesize = 25;
+	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
+		label = window.coreBOS.Describe[module].label;
+		pagesize = window.coreBOS.Describe[module].filterFields.pagesize;
+	}
+	if (pagesize > 10) {
+		pagesize = 25;
+	} else if (pagesize > 5) {
+		pagesize = 10;
+	} else {
+		pagesize = 5;
+	}
+	return <List
+		{...props}
+		title={label}
+		perPage={pagesize}
+		>
+		<Datagrid rowClick="edit">
+			{
+				fields.map((field, idx) => {
+					return cbUtils.field2element(field);
+				})
+			}
+		</Datagrid>
+	</List>
+};
