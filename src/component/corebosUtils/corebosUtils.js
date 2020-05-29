@@ -2,7 +2,7 @@ import React from 'react';
 import { RichTextField, TextField, EmailField, DateField, NumberField, UrlField, BooleanField, ImageField, SelectField, ReferenceField } from 'react-admin';
 
 export default {
-	field2element: (field) => {
+	field2DisplayElement: (field) => {
 		switch (Number(field.uitype)) {
 			case 21: // TextBox small
 			case 19: // TextBox big

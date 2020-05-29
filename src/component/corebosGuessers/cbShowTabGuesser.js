@@ -44,7 +44,7 @@ export const cbShowTabGuesser = props => {
 					return <Tab label={block.name}>
 						{
 							block.fields.map((field, idx) => {
-								return cbUtils.field2element(field);
+								return cbUtils.field2DisplayElement(field);
 							})
 						}
 					</Tab>

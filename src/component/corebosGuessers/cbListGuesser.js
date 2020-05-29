@@ -38,7 +38,7 @@ export const cbListGuesser = props => {
 		<Datagrid rowClick="show">
 			{
 				fields.map((field, idx) => {
-					return cbUtils.field2element(field);
+					return cbUtils.field2DisplayElement(field);
 				})
 			}
 		</Datagrid>
