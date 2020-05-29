@@ -35,7 +35,7 @@ export const cbListGuesser = props => {
 		title={label}
 		perPage={pagesize}
 		>
-		<Datagrid rowClick="edit">
+		<Datagrid rowClick="show">
 			{
 				fields.map((field, idx) => {
 					return cbUtils.field2element(field);
