@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Datagrid } from 'react-admin';
+import { List, Datagrid, EditButton, ShowButton } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
 
 function getFilterFields(module) {
@@ -41,6 +41,8 @@ export const cbListGuesser = props => {
 					return cbUtils.field2DisplayElement(field);
 				})
 			}
+			<EditButton />
+			<ShowButton />
 		</Datagrid>
 	</List>
 };
