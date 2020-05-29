@@ -14,4 +14,11 @@ window.addEventListener('coreBOSLoginEvent', function (e) {
 	});
 }, false);
 
-export default () => { };
+export default () => {
+	window.coreBOS.Describe = {};
+	return cbconn.doDescribe(config.DescribeModules).then((data) => {
+		for (var [mod, desc] of Object.entries(data)) {
+			window.coreBOS.Describe[mod] = desc;
+		}
+	});
+};

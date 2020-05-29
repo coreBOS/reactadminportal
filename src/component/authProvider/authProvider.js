@@ -1,5 +1,6 @@
 import * as cbconn from 'corebos-ws-lib/WSClientm';
 import config from '../../config';
+import loginActions from '../loginActions/loginActions';
 
 if (window.coreBOS===undefined) {
 	window.coreBOS = {};
@@ -11,7 +12,8 @@ export default {
 	login: async ({ username, password }) => {
 		let logdata = localStorage.getItem('coreboslogindata');
 		if (logdata) {
-			window.dispatchEvent(window.coreBOS.LoginEvent);
+			//window.dispatchEvent(window.coreBOS.LoginEvent);
+			await loginActions();
 			return Promise.resolve();
 		} else {
 			const apiUrl = config.Server.url;
@@ -19,7 +21,8 @@ export default {
 			let logindata = await cbconn.doLogin(username, password, false);
 			if (logindata !== false && cbconn.hasError(logindata) === false) {
 				localStorage.setItem('coreboslogindata', JSON.stringify(logindata['result']));
-				window.dispatchEvent(window.coreBOS.LoginEvent);
+				//window.dispatchEvent(window.coreBOS.LoginEvent);
+				await loginActions();
 				return Promise.resolve();
 			} else {
 				return Promise.reject(new Error('incorrect response: ' + cbconn.lastError()));
