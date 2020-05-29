@@ -24,6 +24,7 @@ export default {
 						<TextField key={'ref'+field.name} source={eidfield[0]} />
 					</ReferenceField>;
 			case 53: // User Relation: Assigned To
+			case 52: // User Relation: Created and Modified by
 				return <ReferenceField key={field.name} label={field.label} source={field.name} reference="users" >
 						<TextField key={'ref'+field.name} source="first_name" />
 					</ReferenceField>;
