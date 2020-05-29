@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "corebos-ws-lib": "*",
     "prop-types": "^15.7.2",
+    "ra-input-rich-text": "^3.5.5",
     "ra-language-english": "^3.5.2",
     "ra-language-spanish": "^1.0.0",
     "react": "^16.13.1",
