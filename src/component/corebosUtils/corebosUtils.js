@@ -36,7 +36,7 @@ export default {
 			case 56: // Checkbox
 				return <BooleanField key={field.name} label={field.label} source={field.name} />;
 			case 69: // Image
-				return <ImageField key={field.name} label={field.label} source={field.name} />;
+				return <ImageField key={field.name} label={field.label} source={field.name+'imageinfo.fullpath'} />;
 			case 15: // SelectWithRole,
 			case 16: // Select,
 			case 1613: // SelectModules,
@@ -71,12 +71,14 @@ export default {
 			case 101: // User Relation
 				let eidfield = window.coreBOS.Describe[field.type.refersTo[0]].labelFields.split(',');
 				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference={field.type.refersTo[0].toLowerCase()} link="show" >
-						<SelectInput key={'ref'+field.name} source={eidfield[0]} />
+						<SelectInput key={'ref'+field.name} optionText={eidfield[0]} />
 					</ReferenceInput>;
-			case 53: // User Relation: Assigned To
 			case 52: // User Relation: Created and Modified by
+			case 70: // Created and Modified Time
+				return null;
+			case 53: // User Relation: Assigned To
 				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference="users" >
-						<SelectInput key={'ref'+field.name} source="first_name" />
+						<SelectInput key={'ref'+field.name} optionText="first_name" />
 					</ReferenceInput>;
 			case 56: // Checkbox
 				return <BooleanInput key={field.name} label={field.label} source={field.name} />;

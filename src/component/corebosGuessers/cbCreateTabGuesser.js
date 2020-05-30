@@ -7,7 +7,7 @@ function getFieldsByBlock(module) {
 	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
 		let mfields = window.coreBOS.Describe[module].fields;
 		for (let f = 0; f<mfields.length; f++) {
-			if (! mfields[f].block) {
+			if (!mfields[f].block) {
 				continue;
 			}
 			let bidx = bfields.findIndex((element) => element.id === mfields[f].block.blockid);
