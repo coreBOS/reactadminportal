@@ -29,7 +29,7 @@ export const cbListGuesser = props => {
 			}
 			let q = value.advcriteriaEVQL;
 			q += (q === '' ? '' : (value.stdcriteriaWQL === '' ? '' : ' and '))+value.stdcriteriaEVQL;
-			quickFilters.push(<QuickFilter source={'cbfiltersearch_'+key} label={value.name} defaultValue={q} />);
+			quickFilters.push(<QuickFilter key={'fbref'+key} source={'cbfiltersearch_'+key} label={value.name} defaultValue={q} />);
 		}
 	}
 	const CBListFilter = props => (
