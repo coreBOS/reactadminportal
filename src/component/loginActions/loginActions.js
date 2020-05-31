@@ -16,9 +16,13 @@ window.addEventListener('coreBOSLoginEvent', function (e) {
 
 export default () => {
 	window.coreBOS.Describe = {};
-	return cbconn.doDescribe(config.DescribeModules).then((data) => {
+	window.coreBOS.ListViews = {};
+	return cbconn.doDescribe(config.DescribeModules).then(async (data) => {
 		for (var [mod, desc] of Object.entries(data)) {
 			window.coreBOS.Describe[mod] = desc;
+			await cbconn.doInvoke('getViewsByModule', { module: mod }, 'GET').then((data, ) => {
+				window.coreBOS.ListViews[mod] = data;
+			});
 		}
 	});
 };
