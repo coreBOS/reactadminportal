@@ -1,6 +1,7 @@
 import React from 'react';
-import { List, Datagrid, EditButton, ShowButton } from 'react-admin';
+import { List, Datagrid, EditButton, ShowButton, Filter, SearchInput } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
+import { Chip } from '@material-ui/core';
 
 function getFilterFields(module) {
 	let ffields = [];
@@ -14,8 +15,33 @@ function getFilterFields(module) {
 	return fields;
 }
 
+const QuickFilter = ({ label }) => {
+    return <Chip label={label} />;
+};
+
 export const cbListGuesser = props => {
 	let module = props.options.module;
+	let quickFilters = [];
+	if (window.coreBOS && window.coreBOS.ListViews && window.coreBOS.ListViews[module]) {
+		for (let [key, value] of Object.entries(window.coreBOS.ListViews[module].filters)) {
+			if (value.name==='All') {
+				continue;
+			}
+			let q = value.advcriteriaEVQL;
+			q += (q === '' ? '' : (value.stdcriteriaWQL === '' ? '' : ' and '))+value.stdcriteriaEVQL;
+			quickFilters.push(<QuickFilter source={'cbfiltersearch_'+key} label={value.name} defaultValue={q} />);
+		}
+	}
+	const CBListFilter = props => (
+		<Filter {...props}>
+			<SearchInput source={'cblistsearch_'+module} alwaysOn />
+			{
+				quickFilters.map((field, idx) => {
+					return field;
+				})
+			}
+		</Filter>
+	);
 	let fields = getFilterFields(module);
 	let label = '';
 	let pagesize = 25;
@@ -34,6 +60,7 @@ export const cbListGuesser = props => {
 		{...props}
 		title={label}
 		perPage={pagesize}
+		filters={<CBListFilter />}
 		>
 		<Datagrid rowClick="show">
 			{

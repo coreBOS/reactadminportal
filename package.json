@@ -13,7 +13,7 @@
     "ra-language-spanish": "^1.0.0",
     "react": "^16.13.1",
     "react-admin": "^3.5.2",
-    "react-admin-corebos": "^0.8.0",
+    "react-admin-corebos": "*",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
   },
