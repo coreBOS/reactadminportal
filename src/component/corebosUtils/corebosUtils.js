@@ -21,12 +21,12 @@ export default {
 			case 10: // Module Relation
 			case 101: // User Relation
 				let eidfield = window.coreBOS.Describe[field.type.refersTo[0]].labelFields.split(',');
-				return <ReferenceField key={field.name} label={field.label} source={field.name} reference={field.type.refersTo[0].toLowerCase()} link="show" >
+				return <ReferenceField key={field.name} label={field.label} source={field.name} reference={field.type.refersTo[0].toLowerCase()} link="show" sortBy={field.type.refersTo[0]+'.'+eidfield[0]} >
 						<TextField key={'ref'+field.name} source={eidfield[0]} />
 					</ReferenceField>;
 			case 53: // User Relation: Assigned To
 			case 52: // User Relation: Created and Modified by
-				return <ReferenceField key={field.name} label={field.label} source={field.name} reference="users" >
+				return <ReferenceField key={field.name} label={field.label} source={field.name} reference="users" link="show" sortBy={'Users.first_name'} >
 						<TextField key={'ref'+field.name} source="first_name" />
 					</ReferenceField>;
 			case 13: // Email
