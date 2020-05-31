@@ -2,6 +2,18 @@ import React from 'react';
 import { Edit, SimpleForm } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
 
+const validateEdit = async (values) => {
+	const data = await cbconn.doValidateInformation(values.id, 'Accounts', values)
+		.catch(function (error) {
+			return error;
+		});
+	let errors = {};
+	for (let [key, value] of Object.entries(data)) {
+		errors[key] = value[0];
+	}
+	return errors;
+};
+
 export const cbEditGuesser = props => {
 	let module = props.options.module;
 	let fields = [];
@@ -14,7 +26,7 @@ export const cbEditGuesser = props => {
 		{...props}
 		title={label}
 		>
-		<SimpleForm>
+		<SimpleForm validate={validateEdit}>
 			{
 				fields.map((field, idx) => {
 					return cbUtils.field2InputElement(field);

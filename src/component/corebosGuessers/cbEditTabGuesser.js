@@ -2,6 +2,18 @@ import React from 'react';
 import { Edit, TabbedForm, FormTab } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
 
+const validateEdit = async (values) => {
+	const data = await cbconn.doValidateInformation(values.id, 'Accounts', values)
+		.catch(function (error) {
+			return error;
+		});
+	let errors = {};
+	for (let [key, value] of Object.entries(data)) {
+		errors[key] = value[0];
+	}
+	return errors;
+};
+
 function getFieldsByBlock(module) {
 	let bfields = [];
 	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
@@ -38,10 +50,10 @@ export const cbEditTabGuesser = props => {
 		{...props}
 		title={label}
 		>
-		<TabbedForm>
+		<TabbedForm validate={validateEdit}>
 			{
 				blocks.map((block, bidx) => {
-					return <FormTab label={block.name}>
+					return <FormTab key={'fbrefblk'+bidx} label={block.name}>
 						{
 							block.fields.map((field, idx) => {
 								return cbUtils.field2InputElement(field);

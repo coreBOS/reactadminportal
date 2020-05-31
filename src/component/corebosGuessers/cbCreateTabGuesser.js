@@ -1,6 +1,19 @@
 import React from 'react';
 import { Create, TabbedForm, FormTab } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
+import * as cbconn from 'corebos-ws-lib/WSClientm';
+
+const validateCreation = async (values) => {
+	const data = await cbconn.doValidateInformation('', 'Accounts', values)
+		.catch(function (error) {
+			return error;
+		});
+	let errors = {};
+	for (let [key, value] of Object.entries(data)) {
+		errors[key] = value[0];
+	}
+	return errors;
+};
 
 function getFieldsByBlock(module) {
 	let bfields = [];
@@ -38,10 +51,10 @@ export const cbCreateTabGuesser = props => {
 		{...props}
 		title={label}
 		>
-		<TabbedForm>
+		<TabbedForm validate={validateCreation}>
 			{
 				blocks.map((block, bidx) => {
-					return <FormTab label={block.name}>
+					return <FormTab key={'fbrefblk'+bidx} label={block.name}>
 						{
 							block.fields.map((field, idx) => {
 								return cbUtils.field2InputElement(field);
