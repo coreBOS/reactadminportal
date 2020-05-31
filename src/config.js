@@ -5,4 +5,10 @@ export default {
   DescribeModules: [
     'Accounts', 'Contacts', 'Users', 'Leads'
   ],
+  ResourceModules: {
+    accounts: 'Accounts',
+    contacts: 'Contacts',
+    users: 'Users',
+    leads: 'Leads',
+  },
 }

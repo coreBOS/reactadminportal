@@ -17,6 +17,7 @@ window.addEventListener('coreBOSLoginEvent', function (e) {
 export default () => {
 	window.coreBOS.Describe = {};
 	window.coreBOS.ListViews = {};
+	window.coreBOS.ResourceModules = config.ResourceModules;
 	return cbconn.doDescribe(config.DescribeModules).then(async (data) => {
 		for (var [mod, desc] of Object.entries(data)) {
 			window.coreBOS.Describe[mod] = desc;
