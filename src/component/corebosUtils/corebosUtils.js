@@ -75,9 +75,9 @@ export default {
 				return <NumberInput key={field.name} label={field.label} source={field.name} />;
 			case 10: // Module Relation
 			case 101: // User Relation
-				let module = field.type.refersTo[0];
-				let eidfield = window.coreBOS.Describe[module].labelFields.split(',');
-				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference={module.toLowerCase()} filterToQuery={searchText => formatSearchObject(module, searchText)} >
+				let refmod = field.type.refersTo[0];
+				let eidfield = window.coreBOS.Describe[refmod].labelFields.split(',');
+				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference={refmod.toLowerCase()} filterToQuery={searchText => formatSearchObject(refmod, searchText)} >
 						<AutocompleteInput key={'ref'+field.name} optionText={eidfield[0]} />
 					</ReferenceInput>;
 			case 52: // User Relation: Created and Modified by
