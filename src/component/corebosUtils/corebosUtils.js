@@ -1,6 +1,12 @@
 import React from 'react';
-import { RichTextField, TextField, EmailField, DateField, NumberField, UrlField, BooleanField, ImageField, SelectField, ReferenceField, DateInput, DateTimeInput, NumberInput, ReferenceInput, SelectInput, SelectArrayInput, BooleanInput, ImageInput, TextInput } from 'react-admin';
+import { RichTextField, TextField, EmailField, DateField, NumberField, UrlField, BooleanField, ImageField, SelectField, ReferenceField, DateInput, DateTimeInput, NumberInput, ReferenceInput, SelectInput, SelectArrayInput, BooleanInput, ImageInput, TextInput, AutocompleteInput } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
+
+function formatSearchObject(module, searchText) {
+	let srch = {};
+	srch['cblistsearch_'+module] = searchText;
+	return srch;
+}
 
 export default {
 	field2DisplayElement: (field) => {
@@ -69,9 +75,10 @@ export default {
 				return <NumberInput key={field.name} label={field.label} source={field.name} />;
 			case 10: // Module Relation
 			case 101: // User Relation
-				let eidfield = window.coreBOS.Describe[field.type.refersTo[0]].labelFields.split(',');
-				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference={field.type.refersTo[0].toLowerCase()} link="show" >
-						<SelectInput key={'ref'+field.name} optionText={eidfield[0]} />
+				let module = field.type.refersTo[0];
+				let eidfield = window.coreBOS.Describe[module].labelFields.split(',');
+				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference={module.toLowerCase()} filterToQuery={searchText => formatSearchObject(module, searchText)} >
+						<AutocompleteInput key={'ref'+field.name} optionText={eidfield[0]} />
 					</ReferenceInput>;
 			case 52: // User Relation: Created and Modified by
 			case 70: // Created and Modified Time
