@@ -60,6 +60,9 @@ export default {
 		}
 	},
 	field2InputElement: (field) => {
+		if (field.editable===false) {
+			return null;
+		}
 		const isMandatory = field.mandatory ? required() : null;
 		switch (Number(field.uitype)) {
 			case 21: // TextBox small
