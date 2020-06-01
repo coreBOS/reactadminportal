@@ -1,9 +1,10 @@
 import React from 'react';
 import { Edit, TabbedForm, FormTab } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
+import * as cbconn from 'corebos-ws-lib/WSClientm';
 
-const validateEdit = async (values) => {
-	const data = await cbconn.doValidateInformation(values.id, 'Accounts', values)
+const validateEdit = async (module, values) => {
+	const data = await cbconn.doValidateInformation(values.id, module, values)
 		.catch(function (error) {
 			return error;
 		});
@@ -50,7 +51,7 @@ export const cbEditTabGuesser = props => {
 		{...props}
 		title={label}
 		>
-		<TabbedForm validate={validateEdit}>
+		<TabbedForm validate={(values) => validateEdit(module, values)}>
 			{
 				blocks.map((block, bidx) => {
 					return <FormTab key={'fbrefblk'+bidx} label={block.name}>

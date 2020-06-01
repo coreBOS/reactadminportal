@@ -1,9 +1,10 @@
 import React from 'react';
 import { Edit, SimpleForm } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
+import * as cbconn from 'corebos-ws-lib/WSClientm';
 
-const validateEdit = async (values) => {
-	const data = await cbconn.doValidateInformation(values.id, 'Accounts', values)
+const validateEdit = async (module, values) => {
+	const data = await cbconn.doValidateInformation(values.id, module, values)
 		.catch(function (error) {
 			return error;
 		});
@@ -26,7 +27,7 @@ export const cbEditGuesser = props => {
 		{...props}
 		title={label}
 		>
-		<SimpleForm validate={validateEdit}>
+		<SimpleForm validate={(values) => validateEdit(module, values)}>
 			{
 				fields.map((field, idx) => {
 					return cbUtils.field2InputElement(field);

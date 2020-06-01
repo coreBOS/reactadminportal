@@ -3,8 +3,8 @@ import { Create, SimpleForm } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
 import * as cbconn from 'corebos-ws-lib/WSClientm';
 
-const validateCreation = async (values) => {
-	const data = await cbconn.doValidateInformation('', 'Accounts', values)
+const validateCreation = async (module, values) => {
+	const data = await cbconn.doValidateInformation('', module, values)
 		.catch(function (error) {
 			return error;
 		});
@@ -27,7 +27,7 @@ export const cbCreateGuesser = props => {
 		{...props}
 		title={label}
 		>
-		<SimpleForm validate={validateCreation}>
+		<SimpleForm validate={(values) => validateCreation(module, values)}>
 			{
 				fields.map((field, idx) => {
 					return cbUtils.field2InputElement(field);
