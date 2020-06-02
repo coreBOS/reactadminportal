@@ -30,7 +30,7 @@ export const cbCreateGuesser = props => {
 		<SimpleForm validate={(values) => validateCreation(module, values)}>
 			{
 				fields.map((field, idx) => {
-					return cbUtils.field2InputElement(field);
+					return cbUtils.field2InputElement(field, module);
 				})
 			}
 		</SimpleForm>

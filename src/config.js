@@ -3,6 +3,6 @@ export default {
     url: 'http://localhost/coreBOSTest',
   },
   DescribeModules: [
-    'Accounts', 'Contacts', 'Users', 'Leads'
+    'Accounts', 'Contacts', 'Leads', 'Project'
   ],
 }

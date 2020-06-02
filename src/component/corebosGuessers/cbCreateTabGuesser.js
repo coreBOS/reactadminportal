@@ -57,7 +57,7 @@ export const cbCreateTabGuesser = props => {
 					return <FormTab key={'fbrefblk'+bidx} label={block.name}>
 						{
 							block.fields.map((field, idx) => {
-								return cbUtils.field2InputElement(field);
+								return cbUtils.field2InputElement(field, module);
 							})
 						}
 					</FormTab>

@@ -12,7 +12,7 @@ function formatSearchObject(module, searchText) {
 }
 
 export default {
-	field2DisplayElement: (field) => {
+	field2DisplayElement: (field, module) => {
 		switch (Number(field.uitype)) {
 			case 21: // TextBox small
 			case 19: // TextBox big
@@ -28,16 +28,15 @@ export default {
 			case 71: // Currency
 				return <NumberField key={field.name} label={field.label} source={field.name} options={{ style: 'currency', currency: 'EUR' }} />;
 			case 10: // Module Relation
-			case 101: // User Relation
 				let eidfield = window.coreBOS.Describe[field.type.refersTo[0]].labelFields.split(',');
 				return <ReferenceField key={field.name} label={field.label} source={field.name} reference={field.type.refersTo[0]} link="show" sortBy={field.type.refersTo[0]+'.'+eidfield[0]} >
 						<TextField key={'ref'+field.name} source={eidfield[0]} />
 					</ReferenceField>;
+			case 101: // User Relation
 			case 53: // User Relation: Assigned To
 			case 52: // User Relation: Created and Modified by
-				return <ReferenceField key={field.name} label={field.label} source={field.name} reference="Users" link="show" sortBy={'Users.first_name'} >
-						<TextField key={'ref'+field.name} source="first_name" />
-					</ReferenceField>;
+				let userlist = window.coreBOS.Describe[module].userlist;
+				return <SelectField key={field.name} label={field.label} source={field.name} choices={userlist} optionText="username" optionValue="userid" />;
 			case 13: // Email
 				return <EmailField key={field.name} label={field.label} source={field.name} />;
 			case 17: // URL
@@ -62,7 +61,7 @@ export default {
 				return <TextField key={field.name} label={field.label} source={field.name} />;
 		}
 	},
-	field2InputElement: (field) => {
+	field2InputElement: (field, module) => {
 		if (field.editable===false) {
 			return null;
 		}
@@ -81,19 +80,18 @@ export default {
 			case 71: // Currency
 				return <NumberInput key={field.name} label={field.label} source={field.name} validate={isMandatory} />;
 			case 10: // Module Relation
-			case 101: // User Relation
 				let refmod = field.type.refersTo[0];
 				let eidfield = window.coreBOS.Describe[refmod].labelFields.split(',');
 				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference={refmod} filterToQuery={searchText => formatSearchObject(refmod, searchText)} validate={isMandatory} >
-						<AutocompleteInput key={'ref'+field.name} optionText={eidfield[0]} />
-					</ReferenceInput>;
+							<AutocompleteInput key={'ref'+field.name} optionText={eidfield[0]} />
+						</ReferenceInput>;
 			case 52: // User Relation: Created and Modified by
 			case 70: // Created and Modified Time
 				return null;
 			case 53: // User Relation: Assigned To
-				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference="Users" validate={isMandatory} >
-						<SelectInput key={'ref'+field.name} optionText="first_name" />
-					</ReferenceInput>;
+			case 101: // User Relation
+				let userlist = window.coreBOS.Describe[module].userlist;
+				return <SelectInput key={field.name} label={field.label} source={field.name} choices={userlist} optionText="username" optionValue="userid" />;
 			case 56: // Checkbox
 				return <BooleanInput key={field.name} label={field.label} source={field.name} />;
 			case 69: // Image

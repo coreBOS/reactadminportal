@@ -65,10 +65,10 @@ export const cbListGuesser = props => {
 		<Datagrid rowClick="show">
 			{
 				fields.map((field, idx) => {
-					return cbUtils.field2DisplayElement(field);
+					return cbUtils.field2DisplayElement(field, module);
 				})
 			}
-			<EditButton />
+			{window.coreBOS.Describe[module] && window.coreBOS.Describe[module].updateable ? <EditButton /> : null}
 			<ShowButton />
 		</Datagrid>
 	</List>

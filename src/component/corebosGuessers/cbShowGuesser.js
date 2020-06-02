@@ -17,7 +17,7 @@ export const cbShowGuesser = props => {
 		<SimpleShowLayout>
 			{
 				fields.map((field, idx) => {
-					return cbUtils.field2DisplayElement(field);
+					return cbUtils.field2DisplayElement(field, module);
 				})
 			}
 		</SimpleShowLayout>
