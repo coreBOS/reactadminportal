@@ -11,6 +11,17 @@ function formatSearchObject(module, searchText) {
 	return srch;
 }
 
+const FormattedBooleanField = props => {
+	props.record[props.source] = (props.record[props.source]==='1');
+	return (<BooleanField {...props} />);
+};
+
+const FormattedBooleanInput = props => {
+	console.log(props)
+	props.record[props.source] = Number(props.record[props.source]);
+	return (<BooleanInput {...props} />);
+};
+
 export default {
 	field2DisplayElement: (field, module) => {
 		switch (Number(field.uitype)) {
@@ -42,7 +53,7 @@ export default {
 			case 17: // URL
 				return <UrlField key={field.name} label={field.label} source={field.name} />;
 			case 56: // Checkbox
-				return <BooleanField key={field.name} label={field.label} source={field.name} />;
+				return <FormattedBooleanField key={field.name} label={field.label} source={field.name} />;
 			case 69: // Image
 				return <ImageField key={field.name} label={field.label} source={field.name+'imageinfo.fullpath'} />;
 			case 15: // SelectWithRole,
@@ -93,7 +104,7 @@ export default {
 				let userlist = window.coreBOS.Describe[module].userlist;
 				return <SelectInput key={field.name} label={field.label} source={field.name} choices={userlist} optionText="username" optionValue="userid" />;
 			case 56: // Checkbox
-				return <BooleanInput key={field.name} label={field.label} source={field.name} />;
+				return <FormattedBooleanInput key={field.name} label={field.label} source={field.name} />;
 			case 69: // Image
 				return <ImageInput key={field.name} label={field.label} source={field.name} accept="image/*" >
 						<ImageField key={'ref'+field.name} source={field.name} />
