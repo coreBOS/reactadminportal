@@ -10,13 +10,17 @@ import { cbCreateTabGuesser } from '../component/corebosGuessers/cbCreateTabGues
 import dataProvider from 'react-admin-corebos';
 import loginActions from '../component/loginActions/loginActions';
 import authProvider from '../component/authProvider/authProvider';
+import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import PersonIcon from '@material-ui/icons/Person';
+import ContactsIcon from '@material-ui/icons/Contacts';
+import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
 
 const App = () => (
 	<Admin dataProvider={dataProvider} authProvider={authProvider} >
-		<Resource name="users" options={{module:'Users'}} list={cbListGuesser} show={cbShowGuesser} create={cbCreateGuesser} edit={cbEditGuesser} />
-		<Resource name="accounts" options={{module:'Accounts'}} list={cbListGuesser} show={cbShowTabGuesser} create={cbCreateTabGuesser} edit={cbEditTabGuesser} />
-		<Resource name="contacts" options={{module:'Contacts'}} list={cbListGuesser} show={cbShowGuesser} create={cbCreateGuesser} edit={cbEditGuesser} />
-		<Resource name="leads" options={{module:'Leads'}} list={cbListGuesser} show={cbShowGuesser} create={cbCreateGuesser} edit={cbEditGuesser} />
+		<Resource name="Users" list={cbListGuesser} show={cbShowGuesser} create={cbCreateGuesser} edit={cbEditGuesser} icon={PersonIcon} />
+		<Resource name="Accounts" list={cbListGuesser} show={cbShowTabGuesser} create={cbCreateTabGuesser} edit={cbEditTabGuesser} icon={AccountBalanceIcon} />
+		<Resource name="Contacts" list={cbListGuesser} show={cbShowGuesser} create={cbCreateGuesser} edit={cbEditGuesser} icon={ContactsIcon} />
+		<Resource name="Leads" list={cbListGuesser} show={cbShowGuesser} create={cbCreateGuesser} edit={cbEditGuesser} icon={PlayForWorkIcon} />
 	</Admin>
 );
 

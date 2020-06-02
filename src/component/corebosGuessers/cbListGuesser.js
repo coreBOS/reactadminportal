@@ -20,7 +20,7 @@ const QuickFilter = ({ label }) => {
 };
 
 export const cbListGuesser = props => {
-	let module = props.options.module;
+	let module = props.resource;
 	let quickFilters = [];
 	if (window.coreBOS && window.coreBOS.ListViews && window.coreBOS.ListViews[module]) {
 		for (let [key, value] of Object.entries(window.coreBOS.ListViews[module].filters)) {

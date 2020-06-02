@@ -16,7 +16,7 @@ const validateEdit = async (module, values) => {
 };
 
 export const cbEditGuesser = props => {
-	let module = props.options.module;
+	let module = props.resource;
 	let fields = [];
 	let label = '';
 	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {

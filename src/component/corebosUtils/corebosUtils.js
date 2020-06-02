@@ -27,12 +27,12 @@ export default {
 			case 10: // Module Relation
 			case 101: // User Relation
 				let eidfield = window.coreBOS.Describe[field.type.refersTo[0]].labelFields.split(',');
-				return <ReferenceField key={field.name} label={field.label} source={field.name} reference={field.type.refersTo[0].toLowerCase()} link="show" sortBy={field.type.refersTo[0]+'.'+eidfield[0]} >
+				return <ReferenceField key={field.name} label={field.label} source={field.name} reference={field.type.refersTo[0]} link="show" sortBy={field.type.refersTo[0]+'.'+eidfield[0]} >
 						<TextField key={'ref'+field.name} source={eidfield[0]} />
 					</ReferenceField>;
 			case 53: // User Relation: Assigned To
 			case 52: // User Relation: Created and Modified by
-				return <ReferenceField key={field.name} label={field.label} source={field.name} reference="users" link="show" sortBy={'Users.first_name'} >
+				return <ReferenceField key={field.name} label={field.label} source={field.name} reference="Users" link="show" sortBy={'Users.first_name'} >
 						<TextField key={'ref'+field.name} source="first_name" />
 					</ReferenceField>;
 			case 13: // Email
@@ -81,14 +81,14 @@ export default {
 			case 101: // User Relation
 				let refmod = field.type.refersTo[0];
 				let eidfield = window.coreBOS.Describe[refmod].labelFields.split(',');
-				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference={refmod.toLowerCase()} filterToQuery={searchText => formatSearchObject(refmod, searchText)} validate={isMandatory} >
+				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference={refmod} filterToQuery={searchText => formatSearchObject(refmod, searchText)} validate={isMandatory} >
 						<AutocompleteInput key={'ref'+field.name} optionText={eidfield[0]} />
 					</ReferenceInput>;
 			case 52: // User Relation: Created and Modified by
 			case 70: // Created and Modified Time
 				return null;
 			case 53: // User Relation: Assigned To
-				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference="users" validate={isMandatory} >
+				return <ReferenceInput key={field.name} label={field.label} source={field.name} reference="Users" validate={isMandatory} >
 						<SelectInput key={'ref'+field.name} optionText="first_name" />
 					</ReferenceInput>;
 			case 56: // Checkbox

@@ -41,7 +41,7 @@ function getFieldsByBlock(module) {
 }
 
 export const cbCreateTabGuesser = props => {
-	let module = props.options.module;
+	let module = props.resource;
 	let blocks = getFieldsByBlock(module);
 	let label = '';
 	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
