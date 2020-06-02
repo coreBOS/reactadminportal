@@ -3,6 +3,9 @@ import { RichTextField, TextField, EmailField, DateField, NumberField, UrlField,
 import RichTextInput from 'ra-input-rich-text';
 
 function formatSearchObject(module, searchText) {
+	if(!searchText){
+		return;
+	}
 	let srch = {};
 	srch['cblistsearch_'+module] = searchText;
 	return srch;
