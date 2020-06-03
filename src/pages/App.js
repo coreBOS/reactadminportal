@@ -1,5 +1,6 @@
 import React from 'react';
 import { Admin, Resource } from 'react-admin';
+import i18nProvider from '../component/i18n/i18nProvider';
 import { cbListGuesser } from '../component/corebosGuessers/cbListGuesser';
 import { cbShowGuesser } from '../component/corebosGuessers/cbShowGuesser';
 import { cbShowTabGuesser } from '../component/corebosGuessers/cbShowTabGuesser';
@@ -8,15 +9,15 @@ import { cbEditTabGuesser } from '../component/corebosGuessers/cbEditTabGuesser'
 import { cbCreateGuesser } from '../component/corebosGuessers/cbCreateGuesser';
 import { cbCreateTabGuesser } from '../component/corebosGuessers/cbCreateTabGuesser';
 import dataProvider from 'react-admin-corebos';
-import loginActions from '../component/loginActions/loginActions';
 import authProvider from '../component/authProvider/authProvider';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import ContactsIcon from '@material-ui/icons/Contacts';
 import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
+import Dashboard from './dashboard/Dashboard';
 
 const App = () => (
-	<Admin dataProvider={dataProvider} authProvider={authProvider} >
+	<Admin dashboard={Dashboard} dataProvider={dataProvider} authProvider={authProvider} i18nProvider={i18nProvider} >
 		{permissions => [
 		<Resource
 			name="Accounts"
