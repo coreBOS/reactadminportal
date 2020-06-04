@@ -1,0 +1,11 @@
+"Name Text","Question No","Type","Status","SQL Query","Collection","Module","Page Size","Assigned To","Created By","Created Time","Modified Time","Columns","Condition","Description","Order by Column","Group by Column","Type Properties","Main Table Alias","Unique ID Field","Materialized View Cron","Map Id","Materialized View Workflow","Conditions in Filter Format","CRM Entity Alias","Update View when Related Changes","Related Module List","Unique Identifier"
+"Workflow Table","cbQ-0000004","Table","Active","0","","Products","5.00","admin","admin","2019-12-01 16:05:12","2020-06-04 01:02:20","productname,qtyinstock","","","","","","","","0","","0","0","","0","","fa58798cf4b41a7a08c16c7f9027e0336471d3fd"
+"Ticket per Status","cbQ-0000005","Pie","Active","0","","HelpDesk","0.00","admin","admin","2019-12-01 17:17:48","2020-06-03 23:32:31","[{""fieldname"":""countres"",""operation"":""is"",""value"":""count(ticket_title)"",""valuetype"":""expression"",""joincondition"":""and"",""groupid"":""0""},{""fieldname"":""ticketstatus"",""operation"":""is"",""value"":""ticketstatus"",""valuetype"":""fieldname"",""joincondition"":""and"",""groupid"":""0""}]","","","status","status","{""key_label"":""ticketstatus"",""key_value"":""countres""}","","","0","","0","0","","0","","60062bae63f36750d430c74338a5fdb9f4297182"
+"Mermaid Portal","cbQ-0000006","Mermaid","Active","0","","Potentials","0.00","admin","admin","2020-06-03 23:33:40","2020-06-03 23:38:56","A(( )) -->|call| B
+B(( )) -->|quote| D((sale))
+C(( )) -->|email| B
+linkStyle 0 stroke:greenyellow,stroke-width:2px
+linkStyle 1 stroke:greenyellow,stroke-width:2px
+style B fill:greenyellow,stroke:green,stroke-width:4px
+style A fill:greenyellow,stroke:green","","","","","LR","","","0","","0","0","","0","","1690aa592bb0cb91a905f1fc0bc55b152fcf070c"
+"Total Tickets","cbQ-0000007","Number","Active","0","","HelpDesk","0.00","admin","admin","2020-06-04 00:12:33","2020-06-04 00:59:54","[{""fieldname"":""number"",""operation"":""is"",""value"":""count(ticket_title)"",""valuetype"":""expression"",""joincondition"":""and"",""groupid"":""0""}]","","","","","","","","0","","0","0","","0","","4833f5e7dc2b9e840358ceadc7fafef6864e66b9"
