@@ -6,16 +6,21 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "chart.js": "^2.9.3",
     "corebos-ws-lib": "*",
+    "mermaid": "^8.5.1",
     "prop-types": "^15.7.2",
     "ra-input-rich-text": "^3.5.5",
     "ra-language-english": "^3.5.2",
     "ra-language-spanish": "^1.0.0",
+    "randomcolor": "^0.5.4",
     "react": "^16.13.1",
     "react-admin": "^3.5.2",
     "react-admin-corebos": "*",
+    "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "svg-inline-react": "^3.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
