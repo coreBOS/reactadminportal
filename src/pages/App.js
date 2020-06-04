@@ -8,6 +8,7 @@ import { cbEditGuesser } from '../component/corebosGuessers/cbEditGuesser';
 import { cbEditTabGuesser } from '../component/corebosGuessers/cbEditTabGuesser';
 import { cbCreateGuesser } from '../component/corebosGuessers/cbCreateGuesser';
 import { cbCreateTabGuesser } from '../component/corebosGuessers/cbCreateTabGuesser';
+import { cbProject } from '../component/cbProject/cbProject';
 import dataProvider from 'react-admin-corebos';
 import authProvider from '../component/authProvider/authProvider';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
@@ -38,7 +39,7 @@ const App = () => (
 		<Resource
 			name="Project"
 			list={window.coreBOS.Describe.Project && window.coreBOS.Describe.Project.retrieveable ? cbListGuesser : null}
-			show={window.coreBOS.Describe.Project && window.coreBOS.Describe.Project.retrieveable ? cbShowGuesser : null}
+			show={window.coreBOS.Describe.Project && window.coreBOS.Describe.Project.retrieveable ? cbProject : null}
 			create={window.coreBOS.Describe.Project && window.coreBOS.Describe.Project.createable ? cbCreateGuesser : null}
 			edit={window.coreBOS.Describe.Project && window.coreBOS.Describe.Project.updateable ? cbEditGuesser : null}
 			icon={AccountTreeIcon}
