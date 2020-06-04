@@ -17,7 +17,6 @@ const FormattedBooleanField = props => {
 };
 
 const FormattedBooleanInput = props => {
-	console.log(props)
 	props.record[props.source] = Number(props.record[props.source]);
 	return (<BooleanInput {...props} />);
 };
