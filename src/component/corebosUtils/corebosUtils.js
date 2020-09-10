@@ -23,6 +23,7 @@ const FormattedBooleanInput = props => {
 
 export default {
 	field2DisplayElement: (field, module) => {
+		let userlist = []
 		switch (Number(field.uitype)) {
 			case 21: // TextBox small
 			case 19: // TextBox big
@@ -44,8 +45,13 @@ export default {
 					</ReferenceField>;
 			case 101: // User Relation
 			case 53: // User Relation: Assigned To
+				userlist = field.type.assignto?.users?.options?? [];
+				userlist = userlist.concat(field.type.assignto?.groups?.options?.map((i) => { return { userid: i.groupid, username: i.groupname } } ) ?? [])
+				return (
+					<SelectField key={field.name} label={field.label} source={field.name} choices={userlist} optionText="username" optionValue="userid" />
+				);
 			case 52: // User Relation: Created and Modified by
-				let userlist = window.coreBOS.Describe[module].userlist;
+				userlist = window.coreBOS.Describe[module].userlist;
 				return <SelectField key={field.name} label={field.label} source={field.name} choices={userlist} optionText="username" optionValue="userid" />;
 			case 13: // Email
 				return <EmailField key={field.name} label={field.label} source={field.name} />;
