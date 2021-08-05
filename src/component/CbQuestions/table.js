@@ -15,7 +15,7 @@ const getRows = (rows) => {
 }
 const Table = (props) => {
   let response = [];
-  if (props.questionData.answer) {
+  if (props.questionData.answer && props.questionData.answer.length>0) {
     response = props.questionData.answer;
     return <table>
         {getHeader(response[0])}
