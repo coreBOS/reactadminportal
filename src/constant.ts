@@ -7,7 +7,7 @@ import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import CreateIcon from '@material-ui/icons/Create';
 
 export const APP_NAME = 'coreBOS Portal';
-export const  COREBOS_URL = 'http://62.171.173.175/essdev/';
+export const  COREBOS_URL = 'http://localhost/coreBOSTest';
 export const COREBOS_DESCRIBE = [
     'Accounts', 'Contacts', 'Leads', 'Project', 'cbEmployment', 'cbPhysicalIncident', 'ServiceContracts', 'GLAccounts', 'HelpDesk', 'ProjectTask', 'ModComments'
 ];
