@@ -7,7 +7,8 @@ import PlayForWorkIcon from '@material-ui/icons/PlayForWork';
 export default {
   AppName: "coreBOS Portal",
   Server: {
-    url: 'http://localhost/coreBOSTest',
+    //url: 'http://localhost/coreBOSTest',
+    url: 'http://62.171.173.175/essdev/',
   },
   DescribeModules: [
     'Accounts', 'Contacts', 'Leads', 'Project'
