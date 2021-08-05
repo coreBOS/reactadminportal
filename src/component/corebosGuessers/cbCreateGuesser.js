@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { Create, SimpleForm } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
 import * as cbconn from 'corebos-ws-lib/WSClientm';
+import { useLocation } from 'react-router-dom';
+import { getDataFromLocalDb } from '../../utils/Helpers';
+import { TABLE_DESCRIBE } from '../../local-db';
 
 const validateCreation = async (module, values) => {
 	const data = await cbconn.doValidateInformation('', module, values)
@@ -15,22 +18,36 @@ const validateCreation = async (module, values) => {
 	return errors;
 };
 
-export const cbCreateGuesser = props => {
-	let module = props.resource;
-	let fields = [];
-	let label = '';
-	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
-		label = window.coreBOS.Describe[module].label;
-		fields = window.coreBOS.Describe[module].fields;
+export const CbCreateGuesser = props => {
+	const module = props.resource;
+	
+	const [describe, setDescribe] = useState({});
+	const [fields, setFields] = useState([]);
+	const [label, setLabel] = useState('');
+
+	useEffect(() => {
+		getDataFromLocalDb(TABLE_DESCRIBE.tableName).then((result) => {
+			setDescribe(result);
+			setFields(result[module]?.fields);
+			setLabel(result[module]?.label);
+		});
+	}, [module])
+
+	const defaultValue = {};
+	const url = new URLSearchParams(useLocation().search);
+	if(module === 'HelpDesk'){
+		defaultValue.ticket_title = url.get('title')??'';
+		defaultValue.description = url.get('description')??'';
 	}
+	
 	return <Create
 		{...props}
-		title={label}
+		title={label	}
 		>
-		<SimpleForm validate={(values) => validateCreation(module, values)}>
+		<SimpleForm defaultValue={defaultValue} validate={(values) => validateCreation(module, values)}>
 			{
 				fields.map((field, idx) => {
-					return cbUtils.field2InputElement(field, module);
+					return cbUtils.field2InputElement(field, module, {}, describe);
 				})
 			}
 		</SimpleForm>
