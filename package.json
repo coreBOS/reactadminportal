@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "chart.js": "^2.9.3",
     "corebos-ws-lib": "*",
+    "dexie": "^3.0.3",
     "mermaid": "^8.5.1",
     "prop-types": "^15.7.2",
     "ra-input-rich-text": "^3.5.5",
