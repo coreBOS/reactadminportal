@@ -1,9 +1,13 @@
-import React from 'react';
-import { List, Datagrid, EditButton, ShowButton, Filter, SearchInput } from 'react-admin';
+import React, { useState, useEffect } from 'react';
+import { List, Datagrid, Filter, SearchInput } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
 import { Chip } from '@material-ui/core';
+import RowAction from '../RowAction';
+import { getDataFromLocalDb } from '../../utils/Helpers';
+import { TABLE_DESCRIBE, TABLE_LIST_VIEWS } from '../../local-db';
 
-function getFilterFields(module) {
+
+/* function getFilterFields(module) {
 	let ffields = [];
 	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
 		ffields = window.coreBOS.Describe[module].filterFields.fields;
@@ -13,25 +17,61 @@ function getFilterFields(module) {
 		fields.push(window.coreBOS.Describe[module].fields.find((element) => element.name === ffields[f]));
 	}
 	return fields;
-}
+} */
 
 const QuickFilter = ({ label }) => {
     return <Chip label={label} />;
 };
 
-export const cbListGuesser = props => {
+
+export const CbListGuesser = props => {
 	let module = props.resource;
-	let quickFilters = [];
-	if (window.coreBOS && window.coreBOS.ListViews && window.coreBOS.ListViews[module]) {
-		for (let [key, value] of Object.entries(window.coreBOS.ListViews[module].filters)) {
-			if (value.name==='All') {
-				continue;
+	const [describe, setDescribe] = useState({});
+	//const [listViews, setListViews] = useState({});
+	const [fields, setFields] = useState([]);
+	const [quickFilters, setQuickFilters] = useState([]);
+	const [label, setLabel] = useState('');
+	const [pagesize, setPagesize] = useState(25);
+
+	useEffect(() => {
+		getDataFromLocalDb(TABLE_DESCRIBE.tableName).then((result) => {
+			setDescribe(result);
+			setLabel(result[module]?.label);
+
+			let psize = result[module]?.filterFields?.pagesize;
+			if (psize > 10) {
+				setPagesize(25)
+			} else if (psize > 5) {
+				setPagesize(10)
+			} else {
+				setPagesize(5)
 			}
-			let q = value.advcriteriaEVQL;
-			q += (q === '' ? '' : (value.stdcriteriaWQL === '' ? '' : ' and '))+value.stdcriteriaEVQL;
-			quickFilters.push(<QuickFilter key={'fbref'+key} source={'cbfiltersearch_'+key} label={value.name} defaultValue={q} />);
-		}
-	}
+
+			let ffields = result[module]?.filterFields?.fields;
+			let modFields = [];
+			for (let f = 0; f<ffields.length; f++) {
+				modFields.push(result[module]?.fields.find((element) => element.name === ffields[f]));
+			}
+			setFields(modFields);
+		});
+		getDataFromLocalDb(TABLE_LIST_VIEWS.tableName).then((result) => {
+			//setListViews(result);
+			const modListViews = result[module]??null;
+			const _quickFilters = [];
+			if (modListViews) {
+				for (let [key, value] of Object.entries(modListViews.filters)) {
+					if (value.name==='All') {
+						continue;
+					}
+					let q = value.advcriteriaEVQL;
+					q += (q === '' ? '' : (value.stdcriteriaWQL === '' ? '' : ' and '))+value.stdcriteriaEVQL;
+					_quickFilters.push(<QuickFilter key={'fbref'+key} source={'cbfiltersearch_'+key} label={value.name} defaultValue={q} />);
+				}
+				setQuickFilters(_quickFilters);
+			}
+		});
+	}, [module])
+
 	const CBListFilter = props => (
 		<Filter {...props}>
 			<SearchInput source={'cblistsearch_'+module} alwaysOn />
@@ -42,34 +82,21 @@ export const cbListGuesser = props => {
 			}
 		</Filter>
 	);
-	let fields = getFilterFields(module);
-	let label = '';
-	let pagesize = 25;
-	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
-		label = window.coreBOS.Describe[module].label;
-		pagesize = window.coreBOS.Describe[module].filterFields.pagesize;
-	}
-	if (pagesize > 10) {
-		pagesize = 25;
-	} else if (pagesize > 5) {
-		pagesize = 10;
-	} else {
-		pagesize = 5;
-	}
+
 	return <List
 		{...props}
 		title={label}
 		perPage={pagesize}
 		filters={<CBListFilter />}
 		>
-		<Datagrid rowClick="show">
+		<Datagrid>
 			{
-				fields.map((field, idx) => {
-					return cbUtils.field2DisplayElement(field, module);
+				fields.map((field) => {
+					return cbUtils.field2DisplayElement(field, module, describe);
 				})
 			}
-			{window.coreBOS.Describe[module] && window.coreBOS.Describe[module].updateable ? <EditButton /> : null}
-			<ShowButton />
+			<RowAction describe={describe} {...props} />
 		</Datagrid>
 	</List>
+
 };

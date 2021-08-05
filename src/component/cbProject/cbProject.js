@@ -1,8 +1,10 @@
 import React, { useEffect, useState} from 'react';
 import Typography from '@material-ui/core/Typography';
-import { cbShowGuesser } from '../corebosGuessers/cbShowGuesser';
+import { CbShowGuesser } from '../corebosGuessers/cbShowGuesser';
 import * as cbconn from 'corebos-ws-lib/WSClientm'
-import CbQuestion from '../CbQuestions/index'
+import CbQuestion from '../CbQuestions/index';
+import { MenuItemLink } from "react-admin";
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 const Question = ({questionid}) => {
   const [questionData, setQuestionData] = useState({})
@@ -25,21 +27,26 @@ const Question = ({questionid}) => {
   )
 }
 
-const Aside = () => (
+const Aside = ({ record }) => (
 	<div>
+    <MenuItemLink
+        to={`/ProjectTask?filter=${JSON.stringify({ projectid: record?.id})}`}
+        primaryText={'View Tasks'}
+        leftIcon={<AssignmentTurnedInIcon />}
+      />
     <div style={{ width: 500, margin: '1em' }}>
         <Typography variant="h3">Aside Block Title</Typography>
         <Typography variant="body2">
             Aside block contents
         </Typography>
     </div>
-	<Question questionid='48x44586' />
-	<Question questionid='48x44588' />
-	<Question questionid='48x44587' />
-	<Question questionid='48x44589' />
+	<Question questionid='52x117470' />
+	<Question questionid='52x117471' />
+	<Question questionid='52x117472' />
+	<Question questionid='52x117473' />
 	</div>
 );
 
 export const cbProject = props => {
-	return cbShowGuesser({...props, ...{aside: <Aside />}});
+	return CbShowGuesser({...props, ...{aside: <Aside />}});
 };

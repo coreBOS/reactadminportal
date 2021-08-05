@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { useTranslate } from 'react-admin';
 import AppBar from '@material-ui/core/AppBar';
@@ -6,12 +6,14 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import config from '../../config';
+import { APP_NAME, COREBOS_DESCRIBE, MODULE_ICONS } from '../constant';
 import * as cbconn from 'corebos-ws-lib/WSClientm';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import { getDataFromLocalDb } from '../utils/Helpers';
+import { TABLE_AUTH, TABLE_DESCRIBE } from '../local-db';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -82,46 +84,59 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+const PrimarySearchAppBar = () => {
 	const classes = useStyles();
 	const translate = useTranslate();
 	const [data, setData] = useState([]);
 	let fieldTypecache = {};
-	let logdata = localStorage.getItem('coreboslogindata');
-	logdata = logdata && JSON.parse(logdata);
+
+	const [user, setUser] = useState({});
+	const [describe, setDescribe] = useState({});
+
+
+	useEffect(() => {
+		getDataFromLocalDb(TABLE_AUTH.tableName).then((result) => {
+			setUser(result?.user??{});
+		});
+		getDataFromLocalDb(TABLE_DESCRIBE.tableName).then((result) => {
+			setDescribe(result);
+		});
+	}, [])
+
 	const fetchData = async (ev) => {
 		let params = {
 			'query': ev.currentTarget.value,
-			'search_onlyin': config.DescribeModules.join(','),
-			'restrictionids': JSON.stringify({ 'userId': logdata.userId, 'accountId': '11x0', 'contactId': '12x0', 'limit': 25 })
+			'search_onlyin': COREBOS_DESCRIBE.join(','),
+			'restrictionids': JSON.stringify({ 'userId': user?.id, 'accountId': '11x0', 'contactId': '12x0', 'limit': 25 })
 		};
 		const data = await cbconn.doInvoke('getSearchResultsArray', params, 'POST');
 		setData(data);
 	}
+
 	const getFieldTypesFromRow = (row) => {
 		fieldTypecache[row.search_module_name] = {};
 		let foundT = false;
 		let foundH = false;
 		let foundB = false;
 		let firstfield = '';
-		for (var [field, val] of Object.entries(row)) {
+		for (const [field] of Object.entries(row)) {
 			if (field==='search_module_name' || field==='id') {
 				continue;
 			}
 			if (firstfield==='') {
 				firstfield = field;
 			}
-			let idx = window.coreBOS.Describe[row.search_module_name].fields.findIndex((elem) => (elem.label_raw===field && elem.summary==='T'));
+			let idx = describe[row.search_module_name].fields.findIndex((elem) => (elem.label_raw===field && elem.summary==='T'));
 			if (idx!==-1) {
 				foundT = true;
 				fieldTypecache[row.search_module_name].title = field;
 			}
-			idx = window.coreBOS.Describe[row.search_module_name].fields.findIndex((elem) => (elem.label_raw===field && elem.summary==='H'));
+			idx = describe[row.search_module_name].fields.findIndex((elem) => (elem.label_raw===field && elem.summary==='H'));
 			if (idx!==-1) {
 				foundH = true;
 				fieldTypecache[row.search_module_name].header = field;
 			}
-			idx = window.coreBOS.Describe[row.search_module_name].fields.findIndex((elem) => (elem.label_raw===field && elem.summary==='B'));
+			idx = describe[row.search_module_name].fields.findIndex((elem) => (elem.label_raw===field && elem.summary==='B'));
 			if (idx!==-1) {
 				foundB = true;
 				fieldTypecache[row.search_module_name].body = field;
@@ -159,7 +174,8 @@ export default function PrimarySearchAppBar() {
 		return '  -  '+row[fieldTypecache[row.search_module_name].body];
 	}
 	const getModuleIcon = (mod) => {
-		return config.ModuleIcons[mod];
+		const icon = MODULE_ICONS[mod];
+		return <icon />;
 	}
 
   return (
@@ -167,7 +183,7 @@ export default function PrimarySearchAppBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
-            {config.AppName}
+            { APP_NAME }
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -217,3 +233,5 @@ export default function PrimarySearchAppBar() {
     </div>
   );
 }
+
+export default PrimarySearchAppBar;

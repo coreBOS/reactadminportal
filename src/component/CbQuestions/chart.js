@@ -32,7 +32,7 @@ const Chart = (props) => {
       setChartData({...chartData, labels: chartLabels, datasets: [{data: chartDataSets, backgroundColor: chartBackgroundColors}]})
     };
     getGraphData()
-  },[])
+  },[chartData, props.questionData.answer, props.questionData.properties])
 
     return (
       <React.Fragment>

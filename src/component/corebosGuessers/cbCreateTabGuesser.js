@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { Create, TabbedForm, FormTab } from 'react-admin';
 import cbUtils from '../corebosUtils/corebosUtils';
 import * as cbconn from 'corebos-ws-lib/WSClientm';
+import { getDataFromLocalDb } from '../../utils/Helpers';
+import { TABLE_DESCRIBE } from '../../local-db';
 
 const validateCreation = async (module, values) => {
 	const data = await cbconn.doValidateInformation('', module, values)
@@ -15,38 +17,40 @@ const validateCreation = async (module, values) => {
 	return errors;
 };
 
-function getFieldsByBlock(module) {
-	let bfields = [];
-	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
-		let mfields = window.coreBOS.Describe[module].fields;
-		for (let f = 0; f<mfields.length; f++) {
-			if (!mfields[f].block) {
-				continue;
-			}
-			let bidx = bfields.findIndex((element) => element.id === mfields[f].block.blockid);
-			if (bidx===-1) {
-				bfields.push({
-					id: mfields[f].block.blockid,
-					sequence: mfields[f].block.blocksequence,
-					label: mfields[f].block.blocklabel,
-					name: mfields[f].block.blockname,
-					fields: []
-				});
-				bidx = bfields.findIndex((element) => element.id === mfields[f].block.blockid);
-			}
-			bfields[bidx].fields.push(mfields[f]);
-		}
-	}
-	return bfields;
-}
+export const CbCreateTabGuesser = props => {
+	const module = props.resource;
+	const [describe, setDescribe] = useState({});
+	const [blocks, setBlocks] = useState([]);
+	const [label, setLabel] = useState('');
 
-export const cbCreateTabGuesser = props => {
-	let module = props.resource;
-	let blocks = getFieldsByBlock(module);
-	let label = '';
-	if (window.coreBOS && window.coreBOS.Describe && window.coreBOS.Describe[module]) {
-		label = window.coreBOS.Describe[module].label;
-	}
+	useEffect(() => {
+		getDataFromLocalDb(TABLE_DESCRIBE.tableName).then((result) => {
+			setDescribe(result);
+			let bfields = [];
+			let mfields = result[module]?.fields;
+			for (let f = 0; f<mfields.length; f++) {
+				if (!mfields[f].block) {
+					continue;
+				}
+				let bidx = bfields.findIndex((element) => element.id === mfields[f].block.blockid);
+				if (bidx===-1) {
+					bfields.push({
+						id: mfields[f].block.blockid,
+						sequence: mfields[f].block.blocksequence,
+						label: mfields[f].block.blocklabel,
+						name: mfields[f].block.blockname,
+						fields: []
+					});
+					bidx = bfields.findIndex((element) => element.id === mfields[f].block.blockid);
+				}
+				bfields[bidx].fields.push(mfields[f]);
+			}
+
+			setBlocks(bfields);
+			setLabel(result[module]?.label);
+		});
+	}, [module])
+
 	return <Create
 		{...props}
 		title={label}
@@ -57,7 +61,7 @@ export const cbCreateTabGuesser = props => {
 					return <FormTab key={'fbrefblk'+bidx} label={block.name}>
 						{
 							block.fields.map((field, idx) => {
-								return cbUtils.field2InputElement(field, module);
+								return cbUtils.field2InputElement(field, module, {}, describe);
 							})
 						}
 					</FormTab>
